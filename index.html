@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>大阪＆九州 11/24–12/8</title>
+<style>
+:root{--bg:#faf6f0;--card:#fff;--tx:#1f2937;--mu:#6b7280;--ac:#c0362c;--bd:#e5ddd0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111827;--card:#1f2937;--tx:#f3f4f6;--mu:#9ca3af;--ac:#f08a80;--bd:#374151}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans TC","PingFang TC",sans-serif;line-height:1.5}
+header{padding:20px 16px 8px;max-width:720px;margin:0 auto}
+h1{margin:0;font-size:24px}
+header p{margin:4px 0 0;color:var(--mu);font-size:14px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 16px;max-width:720px;margin:0 auto;z-index:5}
+nav button,#tabs button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+nav button.on,#tabs button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+main{max-width:720px;margin:0 auto;padding:8px 16px 40px}
+h2{font-size:20px;margin:8px 0 2px}
+.sub{color:var(--mu);font-size:14px;margin-bottom:12px}
+.it{display:flex;gap:10px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.it.warn{border-color:var(--ac)}
+.ic{font-size:22px}
+.nm{font-weight:600}
+.nm a{color:var(--tx);text-decoration:none;border-bottom:1px dotted var(--mu)}
+.nt{font-size:14px;color:var(--mu)}
+.hotel{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--ac);color:#fff;font-size:14px}
+.hotel a{color:#fff}
+#tabs{display:flex;gap:8px;padding:4px 16px;max-width:720px;margin:0 auto}.box{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin-bottom:8px}.ck{display:flex;gap:8px;padding:6px 0;font-size:15px}.box ul{margin:6px 0 0;padding-left:20px;font-size:14px}.box a{color:var(--ac)}footer{text-align:center;color:var(--mu);font-size:12px;padding-bottom:24px}
+</style>
+</head>
+<body>
+<header><h1>🇯🇵 大阪＆九州</h1><p>2026/11/24 – 12/8 · 每日天氣、附近景點、自駕行李與退稅資訊</p></header>
+<div id="tabs"></div><nav id="nav"></nav>
+<main id="main"></main>
+<footer>行程資料在 index.html 的 D、NEAR、PACK、TAX 變數中，可直接修改</footer>
+<script>
+// 格式：圖示|名稱|備註（備註含 ❗ 會標紅）
+var D=[
+{d:"11/24",w:"二",t:"抵達京都・紅葉點燈",h:"WGJ HOSTEL KYOTO|$2006",i:[
+"✈️|台北→大阪|1:55–9:30","🚃|大阪→京都|約2小時，¥2800",
+"⛩️|三千院|¥700，8:45–16:45，離貴船很遠，考慮是否去","🐎|鞍馬寺|9:00–16:00，時間不夠就放棄",
+"⛩️|貴船神社|點燈到20:30，水占卜","🚃|叡山電車 KIRARA 展望列車|16:50起夜間點燈，二之瀨→市原紅葉隧道"]},
+{d:"11/25",w:"三",t:"京都・teamLab・夜楓",h:"VIA INN 新大阪|$1455",i:[
+"🌸|teamLab Kyoto|9:00–13:00，已購票","☕|喫茶アマゾン|步行到 teamLab 約14分鐘",
+"🦆|鴨川|看日落","🍁|永觀堂|17:30–21:00夜楓，只能現場買票，20:30最後售票","🚃|京都→大阪|"]},
+{d:"11/26",w:"四",t:"大阪環球影城",h:"VIA INN 新大阪|$1455",i:["🎢|大阪環球影城|❗ 尚未訂票"]},
+{d:"11/27",w:"五",t:"租車・箕面・伊根舟屋",h:"Kaya Yama no Ie|$2413（含早餐）",i:[
+"🚗|大阪租車|7:00取車，兩天$2589；Sky Rent a Car約$2450較便宜",
+"👹|勝尾寺|8:00–10:00 ❗ 尚未訂，停車場要預約","💧|箕面大瀑布|10:10–10:30",
+"🍴|烏龜 海鮮食堂|11:30–12:30","📍|伊根町舟屋|餵海鷗、INE CAFE、向井酒造",
+"🌇|道の駅 舟屋の里伊根|日落約16:45","🍴|烏冬小吃大門|17:30–18:30"]},
+{d:"11/28",w:"六",t:"天橋立・美山・百鬼夜行",h:"123 Guesthouse（難波）|$734",i:[
+"🚞|海上列車拍攝點|10:00–10:30，10:20左右有班車","🦀|蟹肉便當|限量40份，11:10前可能完售",
+"🎠|天橋立 View Land|12:00–13:00，空中腳踏車","🛖|美山茅草屋之里|14:30–17:00",
+"👻|東映太秦映畫村 百鬼夜行|19:00–20:00，已購票"]},
+{d:"11/29",w:"日",t:"福岡市區",h:"Hotel New Gaea Itoshima|$646",i:[
+"✈️|大阪→福岡|7:30–8:55，行李寄放機場","🥖|Pain Stock Tenjin|明太子麵包名店",
+"🐂|黒毛和牛 博多武蔵 天神店|11:00–15:00，需訂位","⛲|大濠公園|湖邊散步",
+"🏰|博多運河城|18:00–22:00水舞秀","🍖|中洲屋台橫丁|18:00–24:00",
+"🚗|福岡機場租車|20:00，9天$10674","💡|地鐵小撇步|全天用同一張卡或同一支手機感應，最高只收¥640"]},
+{d:"11/30",w:"一",t:"糸島",h:"Hotel Celecton Kurume|$467",i:[
+"⛩️|夫婦岩|一早去人少","🍮|手工花鹽布丁|10:00–17:00，早去才不會賣完","⛰️|立石山登山口|約400公尺爬坡，風景很美",
+"🪨|芥屋大門觀光船|看玄武岩洞","🦪|牡蠣小屋 服部屋|","🌇|幣の浜|看日落","⛩️|高良大社|晚上點燈很美"]},
+{d:"12/1",w:"二",t:"由布院・別府",h:"Gran Villa Rirera Towa|$2498",i:[
+"🅿️|Times Parking Yufuin No.2|平日¥300/天","🧀|由布院 Milch|必吃布丁、半熟起司蛋糕",
+"🐔|Nakathu 炸雞|吃柚子胡椒口味","♨️|湯之坪街道|","💧|金鱗湖|",
+"👹|別府地獄之旅|8:00–17:00","🌇|狹霧台|夕陽夜景","🍴|豐後牛由布まぶし 心|"]},
+{d:"12/2",w:"三",t:"黑川溫泉・高千穗夜神樂",h:"Senju 旅館千寿|$1972",i:[
+"💧|金鱗湖|6:30看晨霧","❗|確認店家週三是否營業|Kikusuke、Yamatake",
+"♨️|黑川溫泉|手形¥1500可泡三間；備案：新明館","🍮|Patisserie ROKU 麓|有名泡芙",
+"⛩️|高千穗神社|夜神樂20:00–21:00，已購票，19:30到"]},
+{d:"12/3",w:"四",t:"高千穗・日向・宮崎",h:"Hotel Areaone Miyazaki City|$1324（含早餐）",i:[
+"⛰️|高千穗峽|8:30–17:00","🍴|高千穗牛燒肉 和|11:00–14:00，需預約",
+"✝️|The Sea Cross|海浪侵蝕形成的十字地形","🪨|日向岬 馬ヶ背展望所|看夕陽，免費停車","🐂|焼肉食堂 もめんや|16:30–21:30"]},
+{d:"12/4",w:"五",t:"日南海岸・青島",h:"住宿名稱原文未寫|$3623（含早餐、泡湯）",i:[
+"🍴|Cinema Heaven|11:00–12:00","⛩️|鵜戶神宮|12:30–13:45","🗿|日南太陽花園|14:00–14:30",
+"⛩️|青島神社|15:00–17:00","🪨|鬼の洗濯板|特殊地形","🍴|烏龍麵 岩見|17:00–18:00"]},
+{d:"12/5",w:"六",t:"高千穗峽・白川水源",h:"South Mt. Aso Little Asia Kumamoto|$1749",i:[
+"🚣|高千穗峽步道＋划船|10:30–12:00","🍴|蕎麥麵天庵|12:30–13:40","💧|天安河原|14:00–14:45",
+"⛩️|上色見熊野座神社|15:40–16:40","💧|白川水源|17:00–17:40","🍴|Tedzukurishoku-no-mise SHIMODA|18:00–19:00"]},
+{d:"12/6",w:"日",t:"阿蘇",h:"（原文尚未寫完）|",i:[
+"⛰️|南阿蘇全景公路展望所|8:30–9:00","🍃|草千里|9:15–10:15，天氣好可騎馬","🔥|阿蘇中岳火山口|10:30–12:00，先查管制資訊",
+"🍴|MESHI NO YAMAICHI|12:40–14:00","⛰️|大觀峰|14:30–15:30"]}
+];
+var LOC={"11/24":[35.01,135.77,"京都"],"11/25":[35.01,135.77,"京都"],"11/26":[34.67,135.43,"大阪"],"11/27":[35.67,135.29,"伊根"],"11/28":[35.57,135.2,"天橋立"],"11/29":[33.59,130.4,"福岡"],"11/30":[33.56,130.2,"糸島"],"12/1":[33.27,131.36,"由布院"],"12/2":[32.71,131.3,"高千穗"],"12/3":[31.91,131.42,"宮崎"],"12/4":[31.8,131.47,"青島"],"12/5":[32.82,131.09,"南阿蘇"],"12/6":[32.88,131.09,"阿蘇"]};
+var NEAR={"11/24":"出町柳商店街、下鴨神社、京都御苑","11/25":"南禪寺、哲學之道、平安神宮、京都水族館、東寺","11/26":"道頓堀・心齋橋、大阪城、梅田藍天大廈空中庭園","11/27":"萬博紀念公園（太陽之塔）、伊根灣遊覽船、宮津","11/28":"傘松公園、元伊勢籠神社、智恩寺、廣隆寺（太秦）","11/29":"福岡城跡、櫛田神社、福岡塔、柳橋連合市場","11/30":"白糸の滝、櫻井神社、久留米拉麵","12/1":"由布岳、九重夢大吊橋、海地獄、血之池地獄","12/2":"荒立神社、國見ヶ丘（晨間雲海）、槵觸神社","12/3":"宮崎神宮、シーガイア（Seagaia）","12/4":"飫肥城下町、都井岬、堀切峠","12/5":"阿蘇神社、高森湧水隧道公園、米塚","12/6":"阿蘇神社、阿蘇Farm Land、米塚、城山展望所"};
+var PACK=[
+["🪪 證件與自駕",["護照（入境請蓋章，退稅會用到）","台灣駕照正本＋日文譯本（出發前向租車公司確認所需證件）","租車預約確認信（取還車時間、地點）","駕駛本人名義的信用卡","日幣現金與零錢（停車場、投幣、神社）","海外旅遊險與租車保險資料"]],
+["📱 電子與網路",["手機架（導航用）","車充＋充電線／行動電源","eSIM 或網卡（山區訊號可能不穩）","Google 地圖離線地圖（高千穗、阿蘇）","行程與訂單截圖（沒網路也能看）","同一種支付方式搭福岡地鐵（全天最高¥640）"]],
+["🧥 衣物與天氣",["保暖洋蔥式穿搭（阿蘇、高千穗、由布院早晚接近0°C）","防水外套或折傘","好走的防滑鞋（立石山、高千穗峽）","泡湯小毛巾＋防水袋（黑川溫泉手形）","手套、暖暖包"]],
+["🚗 車上用品",["垃圾袋、濕紙巾","暈車藥與常備藥","太陽眼鏡（冬天低角度陽光很刺眼）","水與零食","向租車公司確認冬季輪胎／防滑鏈（山區可能結冰）"]]];
+var DRIVE=["日本靠左行駛、方向盤在右，轉彎時特別留意車道","紅燈一律停等，不可轉彎","加油站多為自助式，還車前依租車公司規定加滿","停車場先查費用與是否需預約（勝尾寺需預約）","高速公路收費請向租車公司確認是否租 ETC 卡","12月日落約16:45–17:20，盡量避免夜間開山路","山區早晚可能結冰，天候不佳就改期或縮短行程"];
+var TAX=[
+["入境時蓋護照章","建議入境時取得護照入境章；若走自動通關，通關後請立刻要求蓋章。部分店家仍會看護照上的標記。"],
+["購物資格","同一店家、同一天稅前滿¥5,000。出示護照，一律先付含稅價。"],
+["保留收據與商品","11月起不再需要特殊包裝，但出境前不可使用或食用。同一張收據上的商品出境時必須全部帶著，缺一樣整筆都不能退稅。需在出境前90天內購買，且以個人可攜帶出境的量為限。"],
+["出境當天，報到前辦理","在機場出境大廳，報到前，用海關終端機或 Visit Japan Web 完成申請。託運行李內有免稅品的人，一定要先辦完再託運。"],
+["看結果","綠色回應可直接去報到；紅色回應需接受海關檢查。"],
+["領取退款","依購物店家提供的方式領取。新制由民間業者處理，可能有手續費，實際退款可能少於10%。"],
+["注意事項","11/1新制無過渡期，初期機場可能排隊，請提早到。各機場流程略有差異，請在出發前查看回程機場官網。"]];
+var nav=document.getElementById("nav"),main=document.getElementById("main"),tabs=document.getElementById("tabs");
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var WX={};
+function wc(c){return c==0?"☀️ 晴":c<4?"⛅ 多雲":c<50?"🌫️ 霧":c<70?"🌧️ 雨":c<80?"❄️ 雪":c<90?"🌦️ 陣雨":"⛈️ 雷雨"}
+function pc(x,u){return x==null?"—":x+u}
+function getWx(k){
+  var d=D[k].d,l=LOC[d],md=d.replace("/","-");
+  if(WX[d])return Promise.resolve(WX[d]);
+  var b="&latitude="+l[0]+"&longitude="+l[1]+"&timezone=Asia%2FTokyo&daily=weather_code,temperature_2m_max,temperature_2m_min,";
+  var f="https://api.open-meteo.com/v1/forecast?start_date=2026-"+md+"&end_date=2026-"+md+b+"precipitation_probability_max";
+  var a="https://archive-api.open-meteo.com/v1/archive?start_date=2025-"+md+"&end_date=2025-"+md+b+"precipitation_sum";
+  return fetch(f).then(function(r){return r.json()}).then(function(j){
+    if(j.daily&&j.daily.temperature_2m_max&&j.daily.temperature_2m_max[0]!=null)return{j:j.daily,p:"降雨機率 "+pc(j.daily.precipitation_probability_max[0],"%"),t:"預報"};
+    throw 0;
+  }).catch(function(){
+    return fetch(a).then(function(r){return r.json()}).then(function(j){return{j:j.daily,p:"降雨量 "+pc(j.daily.precipitation_sum[0]," mm"),t:"去年同日參考（尚無預報）"}});
+  }).then(function(w){WX[d]=w;return w});
+}
+function trip(k){
+  [].forEach.call(nav.children,function(b,j){b.className=j===k?"on":""});
+  var x=D[k],h=x.h.split("|"),L=LOC[x.d];
+  var html="<h2>"+x.d+"（"+x.w+"）"+esc(x.t)+"</h2><div class=sub>第 "+(k+1)+" 天 / 共 "+D.length+" 天</div>";
+  html+='<div class=box id=wx>⏳ 載入'+L[2]+'天氣…</div>';
+  x.i.forEach(function(s){
+    var p=s.split("|"),n=esc(p[1]);
+    if(p[1].indexOf("→")<0&&p[0]!=="💡"&&p[0]!=="❗")n='<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p[1])+'">'+n+"</a>";
+    html+='<div class="it'+(s.indexOf("❗")>-1?" warn":"")+'"><div class=ic>'+p[0]+"</div><div><div class=nm>"+n+"</div><div class=nt>"+esc(p[2]||"")+"</div></div></div>";
+  });
+  html+='<div class=box><b>📍 附近還能逛</b><div class=nt>'+esc(NEAR[x.d])+"</div></div>";
+  html+='<div class=hotel>🏠 '+esc(h[0])+(h[1]?" · "+esc(h[1]):"")+"</div>";
+  main.innerHTML=html;window.scrollTo(0,0);
+  getWx(k).then(function(w){var el=document.getElementById("wx");if(!el||D[k]!==x||!el.isConnected)return;var j=w.j;
+    el.innerHTML="<b>"+L[2]+"天氣</b> "+wc(j.weather_code[0])+" · "+Math.round(j.temperature_2m_min[0])+"–"+Math.round(j.temperature_2m_max[0])+"°C · "+w.p+'<div class=nt>資料：Open-Meteo（'+w.t+"）</div>"})
+  .catch(function(){var el=document.getElementById("wx");if(el)el.textContent="天氣暫時無法載入，請稍後重試"});
+}
+var S={};try{S=JSON.parse(localStorage.getItem("pk")||"{}")}catch(e){}
+function pack(){
+  var html="<h2>🧳 自駕必帶物品</h2><div class=sub>勾選會存在這台裝置的瀏覽器中</div>";
+  PACK.forEach(function(g,i){
+    html+="<div class=box><b>"+g[0]+"</b>";
+    g[1].forEach(function(t,j){var id="c"+i+"_"+j;html+='<label class=ck><input type=checkbox data-k="'+id+'"'+(S[id]?" checked":"")+"> <span>"+esc(t)+"</span></label>"});
+    html+="</div>";
+  });
+  html+='<div class=box><b>🚦 自駕提醒</b><ul>'+DRIVE.map(function(t){return"<li>"+esc(t)+"</li>"}).join("")+"</ul></div>";
+  main.innerHTML=html;window.scrollTo(0,0);
+  [].forEach.call(main.querySelectorAll("input"),function(c){c.onchange=function(){S[c.dataset.k]=c.checked;try{localStorage.setItem("pk",JSON.stringify(S))}catch(e){}}});
+}
+function tax(){
+  var html="<h2>💴 日本退稅步驟</h2><div class=sub>2026年11月1日起改為「先付含稅價、出境時辦理退稅」的新制</div>";
+  TAX.forEach(function(t,i){html+='<div class=it><div class=ic>'+(i+1)+"</div><div><div class=nm>"+esc(t[0])+"</div><div class=nt>"+esc(t[1])+"</div></div></div>"});
+  html+='<div class=box>官方資訊：<a target="_blank" rel="noopener" href="https://www.narita-airport.jp/en/news/refund/">成田機場退稅說明</a>　<a target="_blank" rel="noopener" href="https://www.vjw.digital.go.jp/">Visit Japan Web</a><div class=nt>規定可能調整，出發前請再確認。</div></div>';
+  main.innerHTML=html;window.scrollTo(0,0);
+}
+[["trip","🗓️ 行程"],["pack","🧳 行李"],["tax","💴 退稅"]].forEach(function(t){var b=document.createElement("button");b.textContent=t[1];b.dataset.v=t[0];b.onclick=function(){location.hash=t[0]==="trip"?"d1":t[0]};tabs.appendChild(b)});
+D.forEach(function(x,k){var b=document.createElement("button");b.textContent=x.d;b.onclick=function(){location.hash="d"+(k+1)};nav.appendChild(b)});
+function route(){
+  var h=location.hash,m=/^#d(\d+)$/.exec(h),v=h==="#pack"?"pack":h==="#tax"?"tax":"trip";
+  [].forEach.call(tabs.children,function(b){b.className=b.dataset.v===v?"on":""});
+  nav.style.display=v==="trip"?"flex":"none";
+  if(v==="pack")pack();else if(v==="tax")tax();else trip(m?Math.min(Math.max(+m[1]-1,0),D.length-1):0);
+}
+window.addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
